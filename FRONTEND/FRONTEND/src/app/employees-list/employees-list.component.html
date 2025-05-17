@@ -1,1 +1,16 @@
-<p>employees-list works!</p>
+<table>
+    <thead>
+        <tr>
+            <th>név</th>
+            <th>services</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let employee of empService.employees">
+            <td>{{employee.firstname}}  {{employee.lastname}}</td>
+            <td *ngFor="let service of employee.services">
+                <span>{{service.name}}</span>
+            </td>
+        </tr>
+    </tbody>
+</table>
