@@ -9,6 +9,7 @@ import { EmployeesListComponent } from './employees-list/employees-list.componen
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ServiceCreateComponent } from './service-create/service-create.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { ServiceCreateComponent } from './service-create/service-create.componen
     ServicesListComponent,
     OrdersListComponent,
     EmployeesListComponent,
-    ServiceCreateComponent
+    ServiceCreateComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
