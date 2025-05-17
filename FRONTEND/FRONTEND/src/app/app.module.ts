@@ -6,21 +6,24 @@ import { AppComponent } from './app.component';
 import { ServicesListComponent } from './services-list/services-list.component';
 import { OrdersListComponent } from './orders-list/orders-list.component';
 import { EmployeesListComponent } from './employees-list/employees-list.component';
-import { FormsModule } from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { ServiceCreateComponent } from './service-create/service-create.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ServicesListComponent,
     OrdersListComponent,
-    EmployeesListComponent
+    EmployeesListComponent,
+    ServiceCreateComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
