@@ -1,1 +1,15 @@
-<p>services-list works!</p>
+<table>
+    <thead>
+        <tr>
+            <th>név</th>
+            <th>leírás</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let service of servService.services">
+            <td>{{service.name}}</td>
+            <td>{{service.description}}</td>
+            <td><button (click)="remove(service)">D</button></td>
+        </tr>
+    </tbody>
+</table>
