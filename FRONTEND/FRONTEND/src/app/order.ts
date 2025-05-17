@@ -9,7 +9,7 @@ export enum OrderStatus {
 export class Order {
   id: string = ''
   serviceId: string = ''
-  service?: Service[] = []
+  service?: Service[];
   description: string = ''
   orderDate: Date = new Date()
   dueDate: Date = new Date()
