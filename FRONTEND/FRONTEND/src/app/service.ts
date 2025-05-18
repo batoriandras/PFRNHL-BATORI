@@ -7,6 +7,7 @@ export class Service {
     description: string = ""
     orders?: Order[];
     employees?: Employee[];
+    editMode: boolean = false;
 
       constructor(init?: Partial<Service>) {
     Object.assign(this, init);

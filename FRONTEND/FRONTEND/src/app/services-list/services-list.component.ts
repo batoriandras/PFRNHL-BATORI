@@ -10,9 +10,29 @@ import { Service } from '../service';
   styleUrl: './services-list.component.sass'
 })
 export class ServicesListComponent {
-  constructor(private router: Router, public servService: ServiceService){}
+  servicetoedit: Service = new Service()
+  serviceTemp: Service = new Service()
 
-    remove(service: Service): void {
+  constructor(private router: Router, public servService: ServiceService) { }
+
+  edit(service: Service): void {
+    this.serviceTemp = service
+    service.editMode = true
+  }
+
+  redirect():void{
+    this.router.navigate(["servicecreate"])
+  }
+  save(service: Service): void {
+    service.editMode = false
+    this.servService.update(service)
+  }
+
+  cancelEdit(service: Service) {
+    service.editMode = false
+  }
+
+  remove(service: Service): void {
     this.servService.deleteService(service)
   }
 }
