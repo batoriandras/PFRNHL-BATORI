@@ -1,26 +1,27 @@
-<div class="container mt-5">
-  <div class="card shadow-lg rounded-4">
-    <div class="card-header bg-primary text-white text-center fs-4">
-      Új Szolgáltatás Létrehozása
-    </div>
-    <div class="card-body">
-      <form [formGroup]="serviceForm" (ngSubmit)="create()">
+<div class="container my-4">
+    <h2 class="mb-4">Új szolgáltatás létrehozása</h2>
+    <form (ngSubmit)="create()" #serviceForm="ngForm" novalidate>
+
         <div class="mb-3">
-          <label for="name" class="form-label">Szolgáltatás neve</label>
-          <input type="text" id="name" class="form-control" formControlName="name" placeholder="Pl. Ablakcsere">
+            <label for="name" class="form-label">Szolgáltatás neve</label>
+            <input type="text" id="name" class="form-control" [(ngModel)]="service.name" name="name" required
+                #name="ngModel" placeholder="Pl. Ablakcsere" />
+            <div *ngIf="name.invalid && name.touched" class="text-danger">
+                A név nem lehet üres!
+            </div>
         </div>
 
         <div class="mb-3">
-          <label for="description" class="form-label">Leírás</label>
-          <textarea id="description" class="form-control" formControlName="description" rows="3" placeholder="Pl. A teljes ablak cseréje modern szigeteléssel..."></textarea>
+            <label for="description" class="form-label">Leírás</label>
+            <textarea id="description" class="form-control" [(ngModel)]="service.description" name="description" rows="3"
+                required #description="ngModel" placeholder="Pl. A teljes ablak cseréje modern szigeteléssel..."></textarea>
+            <div *ngIf="description.invalid && description.touched" class="text-danger">
+                A leírás nem lehet üres!
+            </div>
         </div>
 
-        <div class="text-end">
-          <button type="submit" class="btn btn-success">
-            <i class="bi bi-save me-2"></i> Mentés
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
+        <button type="submit" class="btn btn-primary" [disabled]="serviceForm.invalid">
+            Létrehozás
+        </button>
+    </form>
 </div>

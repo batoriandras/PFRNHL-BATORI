@@ -1,134 +1,76 @@
 <div class="container my-4">
-  <h2 class="mb-4">Új rendelés létrehozása</h2>
-  <form (ngSubmit)="onSubmit()" #orderForm="ngForm" novalidate>
+    <h2 class="mb-4">Új rendelés létrehozása</h2>
+    <form (ngSubmit)="onSubmit()" #orderForm="ngForm" novalidate>
 
-    <div class="mb-3">
-      <label for="service" class="form-label">Szolgáltatás</label>
-      <select
-        id="service"
-        class="form-select"
-        required
-        [(ngModel)]="order.serviceId"
-        name="serviceId"
-        #serviceId="ngModel"
-      >
-        <option value="" disabled selected>Válassz szolgáltatást</option>
-        <option *ngFor="let s of serService.services" [value]="s.id">{{ s.name }}</option>
-      </select>
-      <div *ngIf="serviceId.invalid && serviceId.touched" class="text-danger">
-        Kérlek válassz szolgáltatást!
-      </div>
-    </div>
+        <div class="mb-3">
+            <label for="service" class="form-label">Szolgáltatás</label>
+            <select id="service" class="form-select" required [(ngModel)]="order.serviceId" name="serviceId"
+                #serviceId="ngModel">
+                <option value="" disabled selected>Válassz szolgáltatást</option>
+                <option *ngFor="let s of serService.services" [value]="s.id">{{ s.name }}</option>
+            </select>
+            <div *ngIf="serviceId.invalid && serviceId.touched" class="text-danger">
+                Kérlek válassz szolgáltatást!
+            </div>
+        </div>
 
-    <div class="mb-3">
-      <label for="description" class="form-label">Leírás</label>
-      <textarea
-        id="description"
-        class="form-control"
-        [(ngModel)]="order.description"
-        name="description"
-        rows="3"
-        required
-        #description="ngModel"
-      ></textarea>
-      <div *ngIf="description.invalid && description.touched" class="text-danger">
-        A leírás nem lehet üres!
-      </div>
-    </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Leírás</label>
+            <textarea id="description" class="form-control" [(ngModel)]="order.description" name="description" rows="3"
+                required #description="ngModel"></textarea>
+            <div *ngIf="description.invalid && description.touched" class="text-danger">
+                A leírás nem lehet üres!
+            </div>
+        </div>
 
-    <div class="row">
-      <div class="col-md-6 mb-3">
-  <label for="orderDate" class="form-label">Rendelés dátuma</label>
-  <input
-    type="date"
-    id="orderDate"
-    class="form-control"
-    [value]="today"
-    name="orderDate"
-    readonly
-  />
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="orderDate" class="form-label">Rendelés dátuma</label>
+                <input type="date" id="orderDate" class="form-control" [value]="today" name="orderDate" readonly />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="dueDate" class="form-label">Határidő</label>
+                <input type="date" id="dueDate" class="form-control" [(ngModel)]="order.dueDate" name="dueDate"
+                    [min]="today" required #dueDate="ngModel" />
+                <div *ngIf="dueDate.invalid && dueDate.touched" class="text-danger">
+                    Add meg a határidőt!
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="address" class="form-label">Cím</label>
+            <input type="text" id="address" class="form-control" [(ngModel)]="order.address" name="address" required
+                #address="ngModel" placeholder="Pl. 2002 Biharbürgözd Simon Tibi utca 2." />
+            <div *ngIf="address.invalid && address.touched" class="text-danger">
+                Add meg a címet!
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="phoneNumber" class="form-label">Telefonszám</label>
+                <input type="tel" id="phoneNumber" class="form-control" [(ngModel)]="order.phoneNumber"
+                    name="phoneNumber" required pattern="^\+?[1-9]\d{1,14}$" #phoneNumber="ngModel"
+                    placeholder="Pl. +367099999999" />
+                <div *ngIf="phoneNumber.invalid && phoneNumber.touched" class="text-danger">
+                    Érvényes telefonszám szükséges!
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="email" class="form-label">Email cím</label>
+                <input type="email" id="email" class="form-control" [(ngModel)]="order.email" name="email" required
+                    pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" #email="ngModel" placeholder="Pl. info@batoriuveg.hu" />
+                <div *ngIf="email.invalid && email.touched" class="text-danger">
+                    Érvényes email cím szükséges!
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" [disabled]="orderForm.invalid">
+            Létrehozás
+        </button>
+    </form>
 </div>
-
-      <div class="col-md-6 mb-3">
-        <label for="dueDate" class="form-label">Határidő</label>
-        <input
-          type="date"
-          id="dueDate"
-          class="form-control"
-          [(ngModel)]="order.dueDate"
-          name="dueDate"
-  [min]="today"
-          required
-          #dueDate="ngModel"
-        />
-        <div *ngIf="dueDate.invalid && dueDate.touched" class="text-danger">
-          Add meg a határidőt!
-        </div>
-      </div>
-    </div>
-
-    <div class="mb-3">
-      <label for="address" class="form-label">Cím</label>
-      <input
-        type="text"
-        id="address"
-        class="form-control"
-        [(ngModel)]="order.address"
-        name="address"
-        required
-        #address="ngModel"
-        placeholder="Pl. 2002 Biharbürgözd Simon Tibi utca 2."
-      />
-      <div *ngIf="address.invalid && address.touched" class="text-danger">
-        Add meg a címet!
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-6 mb-3">
-        <label for="phoneNumber" class="form-label">Telefonszám</label>
-        <input
-          type="tel"
-          id="phoneNumber"
-          class="form-control"
-          [(ngModel)]="order.phoneNumber"
-          name="phoneNumber"
-          required
-          pattern="^\+?[1-9]\d{1,14}$"
-          #phoneNumber="ngModel"
-          placeholder="Pl. +367099999999"
-        />
-        <div *ngIf="phoneNumber.invalid && phoneNumber.touched" class="text-danger">
-          Érvényes telefonszám szükséges!
-        </div>
-      </div>
-
-      <div class="col-md-6 mb-3">
-        <label for="email" class="form-label">Email cím</label>
-        <input
-          type="email"
-          id="email"
-          class="form-control"
-          [(ngModel)]="order.email"
-          name="email"
-          required
-          pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$"
-          #email="ngModel"
-          placeholder="Pl. info@batoriuveg.hu"
-        />
-        <div *ngIf="email.invalid && email.touched" class="text-danger">
-          Érvényes email cím szükséges!
-        </div>
-      </div>
-    </div>
-
-    <button
-      type="submit"
-      class="btn btn-primary"
-      [disabled]="orderForm.invalid"
-    >
-      Létrehozás
-    </button>
-  </form>
-</div>
-
