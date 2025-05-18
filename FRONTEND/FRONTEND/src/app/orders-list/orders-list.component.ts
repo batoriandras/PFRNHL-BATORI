@@ -11,9 +11,19 @@ import { Order, OrderStatus } from '../order';
   styleUrl: './orders-list.component.sass'
 })
 export class OrdersListComponent {
-  expandedOrderIndex: number | null = null;
+  expandedOrderIndex: number | null = null
+  expandedArchivedOrderIndex: number | null = null
   orderstatus = OrderStatus
+  activeorders: Order[] = []
+  archivedorders: Order[] = []
 
   constructor(private router: Router, private http: HttpClient, public ordService: OrderService) { }
 
+  activeOrders(): Order[] {
+    return this.ordService.orders.filter(x => x.status !== this.orderstatus.Completed)
+  }
+
+  archivedOrders(): Order[] {
+    return this.ordService.orders.filter(x => x.status === this.orderstatus.Completed)
+  }
 }
