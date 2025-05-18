@@ -10,7 +10,6 @@ import { Service } from '../service';
   styleUrl: './services-list.component.sass'
 })
 export class ServicesListComponent {
-  servicetoedit: Service = new Service()
   serviceTemp: Service = new Service()
 
   constructor(private router: Router, public servService: ServiceService) { }

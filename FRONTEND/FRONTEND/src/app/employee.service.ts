@@ -47,6 +47,7 @@ export class EmployeeService {
     this.http.delete(this.apiBaseUrl+'/'+employee.id).subscribe({
       next: (response) => {
         console.log(response)
+        this.employees = this.employees.filter(x=>x.id !== employee.id)
       },
       error: err => {
         console.error(err)

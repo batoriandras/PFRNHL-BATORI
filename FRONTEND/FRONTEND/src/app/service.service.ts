@@ -48,6 +48,7 @@ export class ServiceService {
     this.http.delete(this.apiBaseUrl+'/'+service.id).subscribe({
       next: (response) => {
         console.log(response)
+        this.services = this.services.filter(x=>x.id!==service.id)
       },
       error: err => {
         console.error(err)

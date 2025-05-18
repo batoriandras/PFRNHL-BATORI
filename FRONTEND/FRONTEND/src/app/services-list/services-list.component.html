@@ -6,7 +6,7 @@
                 <ng-container *ngIf="!service.editMode; else editForm">
                     <div class="card-body">
                         <h5 class="card-title">{{ service.name }}</h5>
-                        <p class="card-text">{{ service.description }}</p>
+                        <p class="card-text overflow-auto">{{ service.description }}</p>
                     </div>
                     <div class="card-footer d-flex justify-content-end gap-2">
                         <button class="btn btn-outline-primary btn-sm" (click)="edit(service)">
