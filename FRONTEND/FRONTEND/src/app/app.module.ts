@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ServiceCreateComponent } from './service-create/service-create.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
+import { OrderTableComponent } from './order-table/order-table.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { FooterComponent } from './footer/footer.component';
     EmployeesListComponent,
     ServiceCreateComponent,
     NavbarComponent,
-    FooterComponent
+    FooterComponent,
+    OrderTableComponent
   ],
   imports: [
     BrowserModule,
