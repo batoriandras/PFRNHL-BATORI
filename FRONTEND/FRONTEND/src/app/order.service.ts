@@ -6,16 +6,30 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class OrderService {
-    orders: Order[] = []
+  orders: Order[] = []
+  adminorder: Order = new Order
+  guestorder: Order = new Order
   localdbname: string = "local_orders"
   apiBaseUrl: string = "https://localhost:7183/api/Order"
   constructor(private http: HttpClient) {
-    this.loadServices()
+    this.loadOrders()
   }
 
-  loadServices(): void {
+  loadOrders(): void {
     this.http.get<Order[]>(this.apiBaseUrl).subscribe(data => {
       this.orders = data
+    })
+  }
+
+  loadAdminview(order: Order): void {
+    this.http.get<Order>(this.apiBaseUrl + "/adminview/" + order.id).subscribe(data => {
+      this.adminorder = data
+    })
+  }
+
+  loadGuestView(order: Order): void {
+    this.http.get<Order>(this.apiBaseUrl + "/guestview/" + order.id).subscribe(data => {
+      this.guestorder = data
     })
   }
 
@@ -30,6 +44,7 @@ export class OrderService {
       }
     })
   }
+
   update(order: Order): void {
     this.http.put(this.apiBaseUrl + '/' + order.id, order).subscribe({
       next: (response) => {
