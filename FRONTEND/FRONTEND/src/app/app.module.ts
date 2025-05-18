@@ -12,6 +12,7 @@ import { ServiceCreateComponent } from './service-create/service-create.componen
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { OrderTableComponent } from './order-table/order-table.component';
+import { OrderCreateComponent } from './order-create/order-create.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { OrderTableComponent } from './order-table/order-table.component';
     ServiceCreateComponent,
     NavbarComponent,
     FooterComponent,
-    OrderTableComponent
+    OrderTableComponent,
+    OrderCreateComponent
   ],
   imports: [
     BrowserModule,
