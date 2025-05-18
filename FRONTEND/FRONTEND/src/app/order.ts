@@ -3,7 +3,8 @@ import { Service } from "./service"
 export enum OrderStatus {
   Pending = 'Pending',
   InProgress = 'InProgress',
-  Completed = 'Completed'
+  Completed = 'Completed',
+  Declined = 'Declined'
 }
 
 export class Order {

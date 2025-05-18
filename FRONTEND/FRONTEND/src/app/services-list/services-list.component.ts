@@ -20,7 +20,7 @@ export class ServicesListComponent {
   }
 
   redirect():void{
-    this.router.navigate(["servicecreate"])
+    this.router.navigate(["services/create"])
   }
   save(service: Service): void {
     service.editMode = false

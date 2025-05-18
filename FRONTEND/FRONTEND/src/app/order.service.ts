@@ -46,11 +46,12 @@ export class OrderService {
   }
 
   update(order: Order): void {
-    this.http.put(this.apiBaseUrl + '/' + order.id, order).subscribe({
+    this.http.put(this.apiBaseUrl + '/' + order.id, {status: order.status}).subscribe({
       next: (response) => {
         console.log(response)
         let index = this.orders.findIndex(x => x.id === order.id)
         this.orders[index] = order
+        this.loadOrders()
       },
       error: (error) => {
         console.log(error)
@@ -58,7 +59,7 @@ export class OrderService {
     })
   }
 
-  deleteService(order: Order): void {
+  deleteOrder(order: Order): void {
     this.http.delete(this.apiBaseUrl + '/' + order.id).subscribe({
       next: (response) => {
         console.log(response)

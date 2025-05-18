@@ -24,7 +24,7 @@
                         </span>
                     </td>
                     <td class="text-end">
-                        <button class="btn btn-outline-secondary btn-sm"
+                        <button class="btn btn-outline-secondary "
                             (click)="expandedIndex = expandedIndex === i ? null : i">
                             <i class="bi"
                                 [ngClass]="expandedIndex === i ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
@@ -32,12 +32,19 @@
                     </td>
                 </tr>
                 <tr *ngIf="expandedIndex === i">
-                    <td colspan="5" class="bg-light">
+                    <td colspan="3" class="bg-light">
                         <strong>Leírás:</strong> {{ order.description }}<br>
                         <strong>Email:</strong> {{ order.email }}<br>
                         <strong>Telefon:</strong> {{ order.phoneNumber }}<br>
                         <strong>Cím:</strong> {{ order.address }}<br>
                         <strong>Rendelés dátuma:</strong> {{ order.orderDate | date }}
+                    </td>
+                    <td colspan="2" class="bg-light">
+                        <div class="d-flex justify-content-end flex-column">
+                        <button class="btn btn-primary mb-1 align-self-end" title="Elfogadás" (click)="acceptOrder(order)"><i class="bi bi-hand-thumbs-up"></i></button>
+                        <button class="btn btn-danger my-1 align-self-end" title="Elutasítás" (click)="declineOrder(order)"><i class="bi bi-x-circle"></i></button>
+                        <button class="btn btn-success mt-1 align-self-end"  title="Kész" (click)="completeOrder(order)"><i class="bi bi-clipboard-check"></i></button>
+                    </div>
                     </td>
                 </tr>
             </ng-container>
