@@ -6,6 +6,7 @@ import { EmployeesListComponent } from './employees-list/employees-list.componen
 import { ServiceCreateComponent } from './service-create/service-create.component';
 import { OrderCreateComponent } from './order-create/order-create.component';
 import { EmployeeEditComponent } from './employee-edit/employee-edit.component';
+import { EmployeeCreateComponent } from './employee-create/employee-create.component';
 
 const routes: Routes = [
   {path:"",redirectTo:"services",pathMatch:"full"},
@@ -15,6 +16,7 @@ const routes: Routes = [
   {path:"services/create", component: ServiceCreateComponent},
   {path:"orders/create", component: OrderCreateComponent},
   {path:"employees/edit/:id", component: EmployeeEditComponent},
+  {path:"employees/create",component: EmployeeCreateComponent},
   {path:"**",redirectTo:"services",pathMatch:"full"}
 ]
 

@@ -14,6 +14,7 @@ import { FooterComponent } from './footer/footer.component';
 import { OrderTableComponent } from './order-table/order-table.component';
 import { OrderCreateComponent } from './order-create/order-create.component';
 import { EmployeeEditComponent } from './employee-edit/employee-edit.component';
+import { EmployeeCreateComponent } from './employee-create/employee-create.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { EmployeeEditComponent } from './employee-edit/employee-edit.component';
     FooterComponent,
     OrderTableComponent,
     OrderCreateComponent,
-    EmployeeEditComponent
+    EmployeeEditComponent,
+    EmployeeCreateComponent
   ],
   imports: [
     BrowserModule,
