@@ -64,7 +64,7 @@
 
     <div class="mb-3">
         <label for="dateOfEmployment" class="form-label">Foglalkoztatás kezdete</label>
-        <input type="date" class="form-control" name="dateOfEmployment" [(ngModel)]="employee.dateOfEmployment" />
+        <input type="date" class="form-control" name="dateOfEmployment" [(ngModel)]="employee.dateOfEmployment" required=""/>
     </div>
 
     <form [formGroup]="serviceForm" *ngIf="formReady">
@@ -75,7 +75,6 @@
             </label>
         </div>
     </form>
-    <div>{{ SelectedValues }}</div>
 
     <button type="submit" class="btn btn-primary mt-3" [disabled]="employeeForm.invalid">
         Mentés

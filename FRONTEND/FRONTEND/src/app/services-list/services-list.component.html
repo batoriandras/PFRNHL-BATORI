@@ -1,7 +1,7 @@
 <div class="container my-5">
     <h2 class="text-center mb-4">Szolgáltatásaink</h2>
     <div class="row row-cols-1 row-cols-md-3 g-4">
-        <div class="col" *ngFor="let service of servService.services">
+        <div class="col" *ngFor="let service of services">
             <div class="card h-100 shadow-sm">
                 <ng-container *ngIf="!service.editMode; else editForm">
                     <div class="card-body">
@@ -12,7 +12,7 @@
                         <button class="btn btn-outline-primary btn-sm" (click)="edit(service)">
                             <i class="bi bi-pencil-square"></i> Update
                         </button>
-                        <button class="btn btn-outline-danger btn-sm" (click)="remove(service)">
+                        <button class="btn btn-outline-danger btn-sm" (click)="deleteService(service)">
                             <i class="bi bi-trash"></i> Delete
                         </button>
                     </div>
@@ -25,7 +25,7 @@
                         <textarea [(ngModel)]="serviceTemp.description" class="form-control mb-2"></textarea>
                     </div>
                     <div class="card-footer d-flex justify-content-end gap-2">
-                        <button class="btn btn-success btn-sm" (click)="save(service)">
+                        <button class="btn btn-success btn-sm" (click)="updateService(service)">
                             <i class="bi bi-check-circle"></i> Save
                         </button>
                         <button class="btn btn-danger btn-sm" (click)="cancelEdit(service)">

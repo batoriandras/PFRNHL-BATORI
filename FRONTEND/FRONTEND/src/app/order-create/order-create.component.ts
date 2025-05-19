@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { OrderService } from '../order.service';
 import { Order, OrderStatus } from '../order';
 import { ServiceService } from '../service.service';
 import { Router } from '@angular/router';
+import { Service } from '../service';
 
 @Component({
   selector: 'app-order-create',
@@ -11,16 +12,30 @@ import { Router } from '@angular/router';
   templateUrl: './order-create.component.html',
   styleUrl: './order-create.component.sass'
 })
-export class OrderCreateComponent {
+export class OrderCreateComponent implements OnInit {
   order: Order = new Order()
+  services: Service[] = []
   orderstatus = OrderStatus
   today: string = new Date().toISOString().substring(0, 10)
 
+  constructor(private router: Router, public ordService: OrderService, public servService: ServiceService) { }
 
-  constructor(private router: Router, public ordService: OrderService, public serService: ServiceService) { }
+  ngOnInit(): void {
+    this.servService.getAll().subscribe({
+      next: data => this.services = data,
+      error: err => console.log(err)
+    })
+  }
 
   onSubmit(): void {
-    this.ordService.create(this.order)
+    this.ordService.create(this.order).subscribe({
+      next: data => {
+        console.log('Létrehozva:', data);
+      },
+      error: err => {
+        console.error('Hiba a létrehozáskor:', err);
+      }
+    });
     this.router.navigate(["orders"])
   }
 }

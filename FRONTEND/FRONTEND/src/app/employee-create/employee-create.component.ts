@@ -14,7 +14,6 @@ import { Service } from '../service';
 })
 export class EmployeeCreateComponent implements OnInit {
   employee: Employee = new Employee()
-  serviceIds: string[] = []
   services: Service[] = []
   serviceForm: FormGroup = new FormGroup({})
   formReady: boolean = false
@@ -23,7 +22,7 @@ export class EmployeeCreateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.serService.loadServices().subscribe((data: Service[]) => {
+    this.serService.getAll().subscribe((data: Service[]) => {
       this.services = data;
       
       const formControls: { [key: string]: FormControl } = {};
@@ -44,13 +43,16 @@ export class EmployeeCreateComponent implements OnInit {
     return service.id;
   }
 
-  checked(serviceId: string): void {
-    this.serviceIds.push(serviceId)
-  }
-
   save(): void {
     this.employee.serviceIDs = this.SelectedValues
-    this.empService.create(this.employee)
+    this.empService.create(this.employee).subscribe({
+      next: data => {
+        console.log('Frissítve:', data);
+      },
+      error: err => {
+        console.error('Hiba történt frissítéskor:', err);
+      }
+    })
     this.router.navigate(["/employees"])
   }
 }

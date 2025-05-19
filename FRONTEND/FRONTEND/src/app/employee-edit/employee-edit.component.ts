@@ -5,6 +5,7 @@ import { Employee } from '../employee';
 import { ServiceService } from '../service.service';
 import { Service } from '../service';
 import moment from 'moment';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-employee-edit',
@@ -13,57 +14,47 @@ import moment from 'moment';
   styleUrl: './employee-edit.component.sass'
 })
 
-export class EmployeeEditComponent implements OnInit{
-   employee: Employee = new Employee();
-  services: Service[] = [];
+export class EmployeeEditComponent {
+employee: Employee = new Employee()
+  services: Service[] = []
+  serviceForm: FormGroup = new FormGroup({})
+  formReady: boolean = false
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private empService: EmployeeService,
-    public serService: ServiceService
-  ) {}
+  constructor(public empService: EmployeeService, private router: Router, public serService: ServiceService) {
+  }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      const found = this.empService.employees.find(e => e.id === id);
-      if (found) {
-        this.employee = new Employee(found);
-        // Ensure proper date object
-        if (!(this.employee.dateOfEmployment instanceof Date)) {
-          this.employee.dateOfEmployment = new Date(this.employee.dateOfEmployment);
-        }
+    this.serService.getAll().subscribe((data: Service[]) => {
+      this.services = data;
+      
+      const formControls: { [key: string]: FormControl } = {};
+      for (let service of this.services) {
+        formControls[service.id] = new FormControl(false);
       }
-    }
 
-    this.services = this.serService.services;
+      this.serviceForm = new FormGroup(formControls);
+      this.formReady = true;
+    });
   }
 
-  isServiceChecked(serviceId: string): boolean {
-    return this.employee.services?.some(s => s.id === serviceId) ?? false;
+  get SelectedValues() {
+    return Object.keys(this.serviceForm.value).filter(key => this.serviceForm.value[key])
   }
 
-  onServiceToggle(service: Service, event: any): void {
-    if (event.target.checked) {
-      if (!this.employee.serviceIDs.includes(service.id)) {
-        this.employee.serviceIDs.push(service.id);
-      }
-    } else {
-      this.employee.serviceIDs = this.employee.serviceIDs.filter(id => id !== service.id);
-    }
-  }
-
-  getDateString(date: Date): string {
-    return new Date(date).toISOString().split('T')[0];
-  }
-
-  onDateChange(event: any): void {
-    this.employee.dateOfEmployment = new Date(event.target.value);
+  trackById(index: number, service: Service): string {
+    return service.id;
   }
 
   save(): void {
-    this.empService.update(this.employee);
-    this.router.navigate(['/employees']);
+    this.employee.serviceIDs = this.SelectedValues
+    this.empService.update(this.employee).subscribe({
+      next: data => {
+        console.log('Frissítve:', data);
+      },
+      error: err => {
+        console.error('Hiba történt frissítéskor:', err);
+      }
+    })
+    this.router.navigate(["/employees"])
   }
 }

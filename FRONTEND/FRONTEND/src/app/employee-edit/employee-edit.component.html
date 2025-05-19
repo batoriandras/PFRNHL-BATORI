@@ -1,71 +1,82 @@
-<form #employeeForm="ngForm" *ngIf="employee" (ngSubmit)="save()" class="p-4 border rounded shadow-sm bg-light">
+<form #employeeForm="ngForm" *ngIf="formReady" (ngSubmit)="save()" class="p-4 border rounded shadow-sm bg-light">
 
     <div class="mb-3">
-        <label class="form-label">First Name</label>
-        <input type="text" class="form-control" name="firstname" [(ngModel)]="employee.firstname" #firstname="ngModel"
-            required />
-        <div class="text-danger" *ngIf="firstname.invalid && firstname.touched">First name is required.</div>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">Last Name</label>
-        <input type="text" class="form-control" name="lastname" [(ngModel)]="employee.lastname" #lastname="ngModel"
-            required />
-        <div class="text-danger" *ngIf="lastname.invalid && lastname.touched">Last name is required.</div>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">Username</label>
-        <input type="text" class="form-control" name="username" [(ngModel)]="employee.username" #username="ngModel"
-            required minlength="4" />
-        <div class="text-danger" *ngIf="username.invalid && username.touched">
-            Username is required and must be at least 4 characters.
+        <label for="firstname" class="form-label">Keresztnév</label>
+        <input type="text" id="firstname" class="form-control" [(ngModel)]="employee.firstname" name="firstname" required
+            #firstname="ngModel" placeholder="John" />
+        <div *ngIf="firstname.invalid && firstname.touched" class="text-danger">
+            Keresztnév kötelező.
         </div>
     </div>
 
     <div class="mb-3">
-        <label class="form-label">Email</label>
-        <input type="email" class="form-control" name="email" [(ngModel)]="employee.email" #email="ngModel" required
-            email />
-        <div class="text-danger" *ngIf="email.invalid && email.touched">A valid email is required.</div>
+        <label for="lastname" class="form-label">Keresztnév</label>
+        <input type="text" id="lastname" class="form-control" [(ngModel)]="employee.lastname" name="lastname" required
+            #lastname="ngModel" placeholder="Doe" />
+        <div *ngIf="lastname.invalid && lastname.touched" class="text-danger">
+            Vezetéknév kötelező.
+        </div>
     </div>
 
     <div class="mb-3">
-        <label class="form-label">Phone Number</label>
-        <input type="text" class="form-control" name="phoneNumber" [(ngModel)]="employee.phoneNumber" />
+        <label for="username" class="form-label">Felhasználónév</label>
+        <input type="text" id="username" class="form-control" [(ngModel)]="employee.username" name="username" required
+            #username="ngModel" placeholder="john_doe77" />
+        <div class="text-danger" *ngIf="username.invalid && username.touched">
+            Felhasználónév kötelező.
+        </div>
     </div>
 
     <div class="mb-3">
-        <label class="form-label">Address</label>
-        <input type="text" class="form-control" name="address" [(ngModel)]="employee.address" />
+        <label for="email" class="form-label">Email cím</label>
+        <input type="email" id="email" class="form-control" [(ngModel)]="employee.email" name="email" required
+            pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" #email="ngModel" placeholder="Pl. info@batoriuveg.hu" />
+        <div *ngIf="email.invalid && email.touched" class="text-danger">
+            Érvényes email cím szükséges!
+        </div>
     </div>
 
     <div class="mb-3">
-        <label class="form-label">Image URL</label>
-        <input type="text" class="form-control" name="image" [(ngModel)]="employee.image" />
+        <label for="phoneNumber" class="form-label">Telefonszám</label>
+        <input type="tel" id="phoneNumber" class="form-control" [(ngModel)]="employee.phoneNumber" name="phoneNumber"
+            required pattern="^\+?[1-9]\d{1,14}$" #phoneNumber="ngModel" placeholder="Pl. +367099999999" />
+        <div *ngIf="phoneNumber.invalid && phoneNumber.touched" class="text-danger">
+            Érvényes telefonszám szükséges!
+        </div>
     </div>
 
     <div class="mb-3">
-        <label class="form-label">Date of Employment</label>
-        <input type="date" class="form-control" name="dateOfEmployment" [(ngModel)]="employee.dateOfEmployment" />
+        <label for="address" class="form-label">Cím</label>
+        <input type="text" id="address" class="form-control" [(ngModel)]="employee.address" name="address" required
+            #address="ngModel" placeholder="Pl. 2002 Biharbürgözd Simon Tibi utca 2." />
+        <div *ngIf="address.invalid && address.touched" class="text-danger">
+            Add meg a címet!
+        </div>
     </div>
 
-<div class="mb-3" *ngIf="services?.length">
-  <div class="form-check" *ngFor="let service of services">
-<input
-  class="form-check-input"
-  type="checkbox"
-  [id]="service.id"
-  [value]="service.id"
-  [checked]="isServiceChecked(service.id)"
-  (change)="onServiceToggle(service, $event)">
-    <label class="form-check-label" [for]="service.id">{{ service.name }}</label>
-  </div>
-</div>
+    <div class="mb-3">
+        <label for="image" class="form-label">Kép URL</label>
+        <input type="text" class="form-control" name="image" required #image="ngModel" [(ngModel)]="employee.image" placeholder="https://randomuser.me/api/portraits/men/1.jpg"/>
+        <div *ngIf="image.invalid && image.touched" class="text-danger">
+            Kérem adjon meg egy kép URL-t!
+        </div>
+    </div>
 
-    <button type="submit" class="btn btn-primary" [disabled]="employeeForm.invalid">
+    <div class="mb-3">
+        <label for="dateOfEmployment" class="form-label">Foglalkoztatás kezdete</label>
+        <input type="date" class="form-control" name="dateOfEmployment" [(ngModel)]="employee.dateOfEmployment" required=""/>
+    </div>
+
+    <form [formGroup]="serviceForm" *ngIf="formReady">
+        <div class="form-check" *ngFor="let service of services; trackBy: trackById">
+            <label>
+                <input type="checkbox" [formControlName]="service.id" />
+                {{ service.name }}
+            </label>
+        </div>
+    </form>
+
+    <button type="submit" class="btn btn-primary mt-3" [disabled]="employeeForm.invalid">
         Mentés
     </button>
 </form>
-<pre>{{ employee| json }}</pre>
-<pre>{{ services | json }}</pre>

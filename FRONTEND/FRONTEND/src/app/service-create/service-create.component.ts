@@ -15,13 +15,20 @@ export class ServiceCreateComponent {
   service: Service = new Service()
 
   constructor(
-    public serService: ServiceService,
+    public servService: ServiceService,
     private fb: FormBuilder,
     private router: Router
   ) { }
 
   create(): void {
-    this.serService.create(this.service)
+    this.servService.create(this.service).subscribe({
+      next: data => {
+        console.log('Létrehozva:', data);
+      },
+      error: err => {
+        console.error('Hiba a létrehozáskor:', err);
+      }
+    });
     this.router.navigate(["services"])
   }
 }

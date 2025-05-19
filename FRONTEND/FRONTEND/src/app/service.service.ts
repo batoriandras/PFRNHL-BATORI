@@ -1,60 +1,36 @@
 import { Injectable } from '@angular/core';
 import { Service } from './service';
-import { HttpClient, HttpHeaderResponse, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceService {
-  services: Service[] = []
-  localdbname: string = "local_services"
-  apiBaseUrl: string = "https://localhost:7183/api/Services"
-  servicesLoaded$ = new BehaviorSubject<Service[]>([]);
-  constructor(private http: HttpClient) {
-    //this.seed()
-    this.loadServices()
-  }
+  private apiBaseUrl: string = "https://localhost:7183/api/Services"
 
-  loadServices(): Observable<Service[]> {
+  constructor(private http: HttpClient) {}
+
+  getAll(): Observable<Service[]> {
     return this.http.get<Service[]>(this.apiBaseUrl)
   }
 
-  create(service: Service): void {
-    this.http.post<Service>(this.apiBaseUrl, service).subscribe({
-      next: (response: Service) => {
-        console.log(response)
-        this.services.push(response)
-      },
-      error: (error) => {
-        console.log(error)
-      }
-    })
-  }
-    update(service: Service): void {
-    this.http.put(this.apiBaseUrl+'/'+service.id, service).subscribe({
-      next: (response) => {
-        console.log(response)
-        let index = this.services.findIndex(x => x.id === service.id)
-        this.services[index] = service
-      },
-      error: (error) => {
-        console.log(error)
-      }
-    })
+  getById(id: string): Observable<Service> {
+    return this.http.get<Service>(`${this.apiBaseUrl}/${id}`)
   }
 
-  deleteService(service: Service): void{
-    this.http.delete(this.apiBaseUrl+'/'+service.id).subscribe({
-      next: (response) => {
-        console.log(response)
-        this.services = this.services.filter(x=>x.id!==service.id)
-      },
-      error: err => {
-        console.error(err)
-      }
-    });
+  create(service: Service): Observable<Service> {
+    return this.http.post<Service>(this.apiBaseUrl, service)
   }
+
+  update(service: Service): Observable<Service> {
+    return this.http.put<Service>(`${this.apiBaseUrl}/${service.id}`, service)
+  }
+
+  delete(service: Service): Observable<void> {
+    return this.http.delete<void>(`${this.apiBaseUrl}/${service.id}`)
+  }
+
   seed(): void {
     const services: Service[] = [
       {
@@ -120,8 +96,10 @@ export class ServiceService {
     ];
 
     services.forEach(service => {
-      this.create(service)
-      console.log(service);
-    });
+      this.create(service).subscribe({
+        next: created => console.log('Seeded:', created),
+        error: err => console.error('Seed error:', err)
+      })
+    })
   }
 }

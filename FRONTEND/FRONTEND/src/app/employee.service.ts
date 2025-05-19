@@ -1,64 +1,38 @@
 import { Injectable } from '@angular/core';
 import { Employee } from './employee';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeService {
-  employees: Employee[] = []
-  localdbname: string = "local_employees"
-  apiBaseUrl: string = "https://localhost:7183/api/Employee"
-  constructor(private http: HttpClient) {
-    this.loadEmployees()
-    //this.seed()
+  private apiBaseUrl: string = "https://localhost:7183/api/Employee";
+
+  constructor(private http: HttpClient) { }
+
+  getAll(): Observable<Employee[]> {
+    return this.http.get<Employee[]>(this.apiBaseUrl);
   }
 
-  loadEmployees(): void {
-    this.http.get<Employee[]>(this.apiBaseUrl).subscribe(data => {
-      this.employees = data
-      this.employees.map(x=>new Date(x.dateOfEmployment))
-    })
+  getById(id: string): Observable<Employee> {
+    return this.http.get<Employee>(`${this.apiBaseUrl}/${id}`);
   }
 
-  create(employee: Employee): void {
-    this.http.post(this.apiBaseUrl, employee).subscribe({
-      next: (response) => {
-        console.log(response)
-        this.employees.push(employee)
-      },
-      error: (error) => {
-        console.log(error)
-      }
-    })
-  }
-  update(employee: Employee): void {
-    this.http.put(this.apiBaseUrl + '/' + employee.id, employee).subscribe({
-      next: (response) => {
-        console.log(response)
-        let index = this.employees.findIndex(x => x.id === employee.id)
-        this.employees[index] = employee
-      },
-      error: (error) => {
-        console.log(error)
-      }
-    })
+  create(employee: Employee): Observable<Employee> {
+    return this.http.post<Employee>(this.apiBaseUrl, employee);
   }
 
-  delete(employee: Employee): void {
-    this.http.delete(this.apiBaseUrl + '/' + employee.id).subscribe({
-      next: (response) => {
-        console.log(response)
-        this.employees = this.employees.filter(x => x.id !== employee.id)
-      },
-      error: err => {
-        console.error(err)
-      }
-    });
+  update(employee: Employee): Observable<Employee> {
+    return this.http.put<Employee>(`${this.apiBaseUrl}/${employee.id}`, employee);
+  }
+
+  delete(employee: Employee): Observable<void> {
+    return this.http.delete<void>(`${this.apiBaseUrl}/${employee.id}`);
   }
 
   seed(): void {
-    const asd: Employee[] = [
+    const dummyEmployees: Employee[] = [
       {
         id: "e1",
         firstname: "János",
@@ -207,8 +181,11 @@ export class EmployeeService {
       }
     ];
 
-    asd.forEach(element => {
-      this.create(element)
-    });
+    dummyEmployees.forEach(emp => {
+      this.create(emp).subscribe({
+        next: (response) => console.log('Seeded:', response),
+        error: (err) => console.error('Seed error:', err)
+      })
+    })
   }
 }

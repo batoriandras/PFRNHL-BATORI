@@ -1,7 +1,7 @@
 <div class="container my-4">
-    <h2 class="mb-4">Munkatársak listája ({{ empService.employees.length }})</h2>
+    <h2 class="mb-4">Munkatársak listája ({{ employees.length }})</h2>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
-        <div class="col" *ngFor="let employee of empService.employees; let i = index">
+        <div class="col" *ngFor="let employee of employees; let i = index">
             <div class="card h-100 shadow-sm">
                 <img [src]="employee.image" class="card-img-top rounded-circle mx-auto mt-3"
                     alt="{{employee.firstname}} {{employee.lastname}}"
@@ -28,7 +28,7 @@
                     <button class="btn btn-outline-primary btn-sm" (click)="edit(employee)">
                         <i class="bi bi-pencil-square"></i> Update
                     </button>
-                    <button class="btn btn-outline-danger btn-sm" (click)="remove(employee)">
+                    <button class="btn btn-outline-danger btn-sm" (click)="deleteEmployee(employee)">
                         <i class="bi bi-trash"></i> Delete
                     </button>
                 </div>
