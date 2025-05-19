@@ -20,9 +20,13 @@ export class OrdersListComponent implements OnInit {
   constructor(private router: Router, private http: HttpClient, public ordService: OrderService) { }
 
   ngOnInit(): void {
-    this.ordService.getAll().subscribe({
-      next: data => this.orders = data,
+    this.ordService.loadAll().subscribe({
+      next: data => console.log(data),
       error: err => console.log(err)
+    })
+
+    this.ordService.orders$.subscribe(orders=>{
+      this.orders=orders
     })
   }
 

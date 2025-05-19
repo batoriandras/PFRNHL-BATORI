@@ -1,34 +1,60 @@
 import { Injectable } from '@angular/core';
 import { Employee } from './employee';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeService {
-  private apiBaseUrl: string = "https://localhost:7183/api/Employee";
+  private apiBaseUrl: string = "https://localhost:7183/api/Employee"
 
-  constructor(private http: HttpClient) { }
+  private employeesSubject = new BehaviorSubject<Employee[]>([])
+  public employees$ = this.employeesSubject.asObservable()
 
-  getAll(): Observable<Employee[]> {
-    return this.http.get<Employee[]>(this.apiBaseUrl);
+  constructor(private http: HttpClient) {
+    this.loadAll().subscribe()
+  }
+
+  loadAll(): Observable<Employee[]> {
+    return this.http.get<Employee[]>(this.apiBaseUrl).pipe(
+      tap(employees => this.employeesSubject.next(employees))
+    );
   }
 
   getById(id: string): Observable<Employee> {
-    return this.http.get<Employee>(`${this.apiBaseUrl}/${id}`);
+    return this.http.get<Employee>(`${this.apiBaseUrl}/${id}`)
   }
 
   create(employee: Employee): Observable<Employee> {
-    return this.http.post<Employee>(this.apiBaseUrl, employee);
+    return this.http.post<Employee>(this.apiBaseUrl, employee).pipe(
+      tap(created => {
+        const current = this.employeesSubject.value
+        this.employeesSubject.next([...current, created])
+      })
+    )
   }
 
   update(employee: Employee): Observable<Employee> {
-    return this.http.put<Employee>(`${this.apiBaseUrl}/${employee.id}`, employee);
+    return this.http.put<Employee>(`${this.apiBaseUrl}/${employee.id}`, employee).pipe(
+      tap(updated => {
+        const current = this.employeesSubject.value
+        const index = current.findIndex(e => e.id === updated.id)
+        if (index !== -1) {
+          current[index] = updated
+          this.employeesSubject.next([...current])
+        }
+      })
+    )
   }
 
   delete(employee: Employee): Observable<void> {
-    return this.http.delete<void>(`${this.apiBaseUrl}/${employee.id}`);
+    return this.http.delete<void>(`${this.apiBaseUrl}/${employee.id}`).pipe(
+      tap(() => {
+        const current = this.employeesSubject.value.filter(e => e.id !== employee.id)
+        this.employeesSubject.next(current)
+      })
+    )
   }
 
   seed(): void {
@@ -179,7 +205,7 @@ export class EmployeeService {
           "54bf8a82-a12b-41a3-b8d3-4851d3397cd3"
         ]
       }
-    ];
+    ]
 
     dummyEmployees.forEach(emp => {
       this.create(emp).subscribe({

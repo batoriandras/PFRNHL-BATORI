@@ -6,6 +6,7 @@ import { ServiceService } from '../service.service';
 import { Service } from '../service';
 import moment from 'moment';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-employee-edit',
@@ -15,8 +16,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 
 export class EmployeeEditComponent {
-employee: Employee = new Employee()
+  employee: Employee = new Employee()
   services: Service[] = []
+  services$!: Observable<Service[]>
   serviceForm: FormGroup = new FormGroup({})
   formReady: boolean = false
 
@@ -24,16 +26,20 @@ employee: Employee = new Employee()
   }
 
   ngOnInit(): void {
-    this.serService.getAll().subscribe((data: Service[]) => {
-      this.services = data;
-      
-      const formControls: { [key: string]: FormControl } = {};
-      for (let service of this.services) {
-        formControls[service.id] = new FormControl(false);
-      }
+    this.serService.loadAll();
 
-      this.serviceForm = new FormGroup(formControls);
-      this.formReady = true;
+    this.serService.services$.subscribe(services => {
+      if (services.length > 0) {
+        this.services = services;
+
+        this.serviceForm = new FormGroup(
+          Object.fromEntries(
+            services.map(service => [service.id, new FormControl(false)])
+          )
+        );
+
+        this.formReady = true;
+      }
     });
   }
 

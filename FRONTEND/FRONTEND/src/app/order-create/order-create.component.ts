@@ -5,6 +5,7 @@ import { Order, OrderStatus } from '../order';
 import { ServiceService } from '../service.service';
 import { Router } from '@angular/router';
 import { Service } from '../service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-order-create',
@@ -21,9 +22,13 @@ export class OrderCreateComponent implements OnInit {
   constructor(private router: Router, public ordService: OrderService, public servService: ServiceService) { }
 
   ngOnInit(): void {
-    this.servService.getAll().subscribe({
-      next: data => this.services = data,
+    this.servService.loadAll().subscribe({
+      next: data => console.log(data),
       error: err => console.log(err)
+    })
+
+    this.servService.services$.subscribe(services=>{
+      this.services=services
     })
   }
 

@@ -1,38 +1,64 @@
 import { Injectable } from '@angular/core';
 import { Order, OrderStatus } from './order';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
-  apiBaseUrl: string = "https://localhost:7183/api/Order";
+  private apiBaseUrl: string = "https://localhost:7183/api/Order"
 
-  constructor(private http: HttpClient) { }
+  private ordersSubject = new BehaviorSubject<Order[]>([])
+  public orders$ = this.ordersSubject.asObservable()
 
-  getAll(): Observable<Order[]> {
-    return this.http.get<Order[]>(this.apiBaseUrl);
+  constructor(private http: HttpClient) {
+    this.loadAll().subscribe()
+  }
+
+  loadAll(): Observable<Order[]> {
+    return this.http.get<Order[]>(this.apiBaseUrl).pipe(
+      tap(orders => this.ordersSubject.next(orders))
+    );
   }
 
   loadAdminview(orderId: string): Observable<Order> {
-    return this.http.get<Order>(`${this.apiBaseUrl}/adminview/${orderId}`);
+    return this.http.get<Order>(`${this.apiBaseUrl}/adminview/${orderId}`)
   }
 
   loadGuestView(orderId: string): Observable<Order> {
-    return this.http.get<Order>(`${this.apiBaseUrl}/guestview/${orderId}`);
+    return this.http.get<Order>(`${this.apiBaseUrl}/guestview/${orderId}`)
   }
 
   create(order: Order): Observable<Order> {
-    return this.http.post<Order>(this.apiBaseUrl, order);
+    return this.http.post<Order>(this.apiBaseUrl, order).pipe(
+      tap(created => {
+        const current = this.ordersSubject.value
+        this.ordersSubject.next([...current, created])
+      })
+    )
   }
 
   update(order: Order): Observable<any> {
-    return this.http.put(`${this.apiBaseUrl}/${order.id}`, { status: order.status });
+    return this.http.put(`${this.apiBaseUrl}/${order.id}`, { status: order.status }).pipe(
+      tap(() => {
+        const current = this.ordersSubject.value
+        const index = current.findIndex(o => o.id === order.id)
+        if (index !== -1) {
+          current[index] = { ...current[index], status: order.status }
+          this.ordersSubject.next([...current])
+        }
+      })
+    )
   }
 
   delete(order: Order): Observable<any> {
-    return this.http.delete(`${this.apiBaseUrl}/${order.id}`);
+    return this.http.delete(`${this.apiBaseUrl}/${order.id}`).pipe(
+      tap(() => {
+        const current = this.ordersSubject.value.filter(o => o.id !== order.id)
+        this.ordersSubject.next(current)
+      })
+    )
   }
 
   seed(): void {

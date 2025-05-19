@@ -23,12 +23,13 @@ export class ServiceCreateComponent {
   create(): void {
     this.servService.create(this.service).subscribe({
       next: data => {
-        console.log('Létrehozva:', data);
+        console.log('Létrehozva:', data)
+        this.router.navigate(["services"])
       },
       error: err => {
-        console.error('Hiba a létrehozáskor:', err);
+        console.error('Hiba a létrehozáskor:', err)
       }
     });
-    this.router.navigate(["services"])
+    
   }
 }

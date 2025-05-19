@@ -1,34 +1,61 @@
 import { Injectable } from '@angular/core';
 import { Service } from './service';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceService {
-  private apiBaseUrl: string = "https://localhost:7183/api/Services"
+  private apiBaseUrl = "https://localhost:7183/api/Services";
 
-  constructor(private http: HttpClient) {}
+  private servicesSubject = new BehaviorSubject<Service[]>([]);
+  services$ = this.servicesSubject.asObservable();
 
-  getAll(): Observable<Service[]> {
-    return this.http.get<Service[]>(this.apiBaseUrl)
+  constructor(private http: HttpClient) {
+    // opcionális, automatikusan betölti a lista indításkor
+    this.loadAll().subscribe();
+  }
+
+  loadAll(): Observable<Service[]> {
+    return this.http.get<Service[]>(this.apiBaseUrl).pipe(
+      tap(data => this.servicesSubject.next(data))
+    );
   }
 
   getById(id: string): Observable<Service> {
-    return this.http.get<Service>(`${this.apiBaseUrl}/${id}`)
+    return this.http.get<Service>(`${this.apiBaseUrl}/${id}`);
   }
 
   create(service: Service): Observable<Service> {
-    return this.http.post<Service>(this.apiBaseUrl, service)
+    return this.http.post<Service>(this.apiBaseUrl, service).pipe(
+      tap(created => {
+        const current = this.servicesSubject.value;
+        this.servicesSubject.next([...current, created]);
+      })
+    );
   }
 
   update(service: Service): Observable<Service> {
-    return this.http.put<Service>(`${this.apiBaseUrl}/${service.id}`, service)
+    return this.http.put<Service>(`${this.apiBaseUrl}/${service.id}`, service).pipe(
+      tap(updated => {
+        const current = this.servicesSubject.value;
+        const index = current.findIndex(s => s.id === updated.id);
+        if (index !== -1) {
+          current[index] = updated;
+          this.servicesSubject.next([...current]);
+        }
+      })
+    );
   }
 
   delete(service: Service): Observable<void> {
-    return this.http.delete<void>(`${this.apiBaseUrl}/${service.id}`)
+    return this.http.delete<void>(`${this.apiBaseUrl}/${service.id}`).pipe(
+      tap(() => {
+        const current = this.servicesSubject.value.filter(s => s.id !== service.id);
+        this.servicesSubject.next(current);
+      })
+    );
   }
 
   seed(): void {
@@ -96,10 +123,7 @@ export class ServiceService {
     ];
 
     services.forEach(service => {
-      this.create(service).subscribe({
-        next: created => console.log('Seeded:', created),
-        error: err => console.error('Seed error:', err)
-      })
+      this.create(service).subscribe()
     })
   }
 }

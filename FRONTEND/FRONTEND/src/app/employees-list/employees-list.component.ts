@@ -12,16 +12,20 @@ import { Route, Router } from '@angular/router';
   styleUrl: './employees-list.component.sass'
 })
 export class EmployeesListComponent implements OnInit {
-  serviceModalOpen: boolean = false;
-  selectedService?: Service;
+  serviceModalOpen: boolean = false
+  selectedService?: Service
   employees: Employee[] = []
 
   constructor(private router: Router, public empService: EmployeeService) { }
 
   ngOnInit(): void {
-    this.empService.getAll().subscribe({
-      next: data => this.employees = data,
+    this.empService.loadAll().subscribe({
+      next: data => console.log(data),
       error: err => console.log(err)
+    })
+
+    this.empService.employees$.subscribe(employees=>{
+      this.employees = employees
     })
   }
 

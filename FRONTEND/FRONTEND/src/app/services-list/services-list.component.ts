@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ServiceService } from '../service.service';
 import { Service } from '../service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-services-list',
@@ -16,9 +17,13 @@ export class ServicesListComponent implements OnInit {
   constructor(private router: Router, public servService: ServiceService) { }
 
   ngOnInit(): void {
-    this.servService.getAll().subscribe({
-      next: data => this.services = data,
+    this.servService.loadAll().subscribe({
+      next: data => console.log(data),
       error: err => console.log(err)
+    })
+
+    this.servService.services$.subscribe(services=>{
+      this.services=services
     })
   }
 

@@ -22,16 +22,20 @@ export class EmployeeCreateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.serService.getAll().subscribe((data: Service[]) => {
-      this.services = data;
-      
-      const formControls: { [key: string]: FormControl } = {};
-      for (let service of this.services) {
-        formControls[service.id] = new FormControl(false);
-      }
+    this.serService.loadAll();
 
-      this.serviceForm = new FormGroup(formControls);
-      this.formReady = true;
+    this.serService.services$.subscribe(services => {
+      if (services.length > 0) {
+        this.services = services;
+
+        this.serviceForm = new FormGroup(
+          Object.fromEntries(
+            services.map(service => [service.id, new FormControl(false)])
+          )
+        );
+
+        this.formReady = true;
+      }
     });
   }
 
@@ -47,12 +51,12 @@ export class EmployeeCreateComponent implements OnInit {
     this.employee.serviceIDs = this.SelectedValues
     this.empService.create(this.employee).subscribe({
       next: data => {
-        console.log('Frissítve:', data);
+        console.log('Frissítve:', data)
+        this.router.navigate(["/employees"])
       },
       error: err => {
         console.error('Hiba történt frissítéskor:', err);
       }
     })
-    this.router.navigate(["/employees"])
   }
 }
