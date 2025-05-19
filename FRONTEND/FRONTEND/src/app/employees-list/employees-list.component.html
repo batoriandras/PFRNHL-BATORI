@@ -1,16 +1,59 @@
-<table>
-    <thead>
-        <tr>
-            <th>név</th>
-            <th>services</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let employee of empService.employees">
-            <td>{{employee.firstname}}  {{employee.lastname}}</td>
-            <td *ngFor="let service of employee.services">
-                <span>{{service.name}}</span>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div class="container my-4">
+    <h2 class="mb-4">Munkatársak listája ({{ empService.employees.length }})</h2>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
+        <div class="col" *ngFor="let employee of empService.employees; let i = index">
+            <div class="card h-100 shadow-sm">
+                <img [src]="employee.image" class="card-img-top rounded-circle mx-auto mt-3"
+                    alt="{{employee.firstname}} {{employee.lastname}}"
+                    style="width: 120px; height: 120px; object-fit: cover;">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title text-primary">{{ employee.firstname }} {{ employee.lastname }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ employee.username }}</h6>
+                    <p class="mb-1"><i class="bi bi-envelope"></i> {{ employee.email }}</p>
+                    <p class="mb-1"><i class="bi bi-phone"></i> {{ employee.phoneNumber }}</p>
+                    <p class="mb-1"><i class="bi bi-geo-alt"></i> {{ employee.address }}</p>
+                    <p class="mb-2"><small class="text-muted">Foglalkoztatás kezdete: {{ employee.dateOfEmployment |
+                            date:'yyyy.MM.dd' }}</small></p>
+
+                </div>
+                <div class="card-footer">
+                    <!-- Szolgáltatás badge-ek -->
+                    <ng-container *ngFor="let service of employee.services">
+                        <span class="badge bg-primary me-1" style="cursor: pointer;"
+                            (click)="openServiceModal(service)">
+                            {{ service.name }}
+                        </span>
+                    </ng-container>
+                </div>
+                <div class="card-footer d-flex justify-content-between gap-2">
+                        <button class="btn btn-outline-primary btn-sm" (click)="edit(employee)">
+                            <i class="bi bi-pencil-square"></i> Update
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm" (click)="remove(employee)">
+                            <i class="bi bi-trash"></i> Delete
+                        </button>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" tabindex="-1" 
+     [ngClass]="{'show d-block': serviceModalOpen}" 
+     style="background: rgba(0,0,0,0.5);" 
+     role="dialog" (click)="closeServiceModal($event)">
+  <div class="modal-dialog modal-dialog-centered" role="document" (click)="$event.stopPropagation()">
+    <div class="modal-content" *ngIf="selectedService">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ selectedService.name }}</h5>
+        <button type="button" class="btn-close" (click)="closeServiceModal()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>{{ selectedService.description }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeServiceModal()">Bezár</button>
+      </div>
+    </div>
+  </div>
+</div>

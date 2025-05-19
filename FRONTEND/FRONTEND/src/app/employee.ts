@@ -11,6 +11,7 @@ export class Employee {
     address: string = ''
     image: string = ''
     dateOfEmployment: Date = new Date()
+    serviceIDs: string[] = []
     services?: Service[]
 
     constructor(init?: Partial<Employee>) {
