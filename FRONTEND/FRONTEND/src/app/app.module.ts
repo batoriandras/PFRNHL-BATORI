@@ -13,6 +13,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { OrderTableComponent } from './order-table/order-table.component';
 import { OrderCreateComponent } from './order-create/order-create.component';
+import { EmployeeEditComponent } from './employee-edit/employee-edit.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { OrderCreateComponent } from './order-create/order-create.component';
     NavbarComponent,
     FooterComponent,
     OrderTableComponent,
-    OrderCreateComponent
+    OrderCreateComponent,
+    EmployeeEditComponent
   ],
   imports: [
     BrowserModule,

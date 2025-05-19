@@ -12,12 +12,11 @@
                     <p class="mb-1"><i class="bi bi-envelope"></i> {{ employee.email }}</p>
                     <p class="mb-1"><i class="bi bi-phone"></i> {{ employee.phoneNumber }}</p>
                     <p class="mb-1"><i class="bi bi-geo-alt"></i> {{ employee.address }}</p>
-                    <p class="mb-2"><small class="text-muted">Foglalkoztatás kezdete: {{ employee.dateOfEmployment |
-                            date:'yyyy.MM.dd' }}</small></p>
+                    <p class="mb-2"><small class="text-muted">Foglalkoztatás kezdete: {{ employee.dateOfEmployment
+                            |date:'yyyy.MM.dd' }}</small></p>
 
                 </div>
                 <div class="card-footer">
-                    <!-- Szolgáltatás badge-ek -->
                     <ng-container *ngFor="let service of employee.services">
                         <span class="badge bg-primary me-1" style="cursor: pointer;"
                             (click)="openServiceModal(service)">
@@ -26,34 +25,31 @@
                     </ng-container>
                 </div>
                 <div class="card-footer d-flex justify-content-between gap-2">
-                        <button class="btn btn-outline-primary btn-sm" (click)="edit(employee)">
-                            <i class="bi bi-pencil-square"></i> Update
-                        </button>
-                        <button class="btn btn-outline-danger btn-sm" (click)="remove(employee)">
-                            <i class="bi bi-trash"></i> Delete
-                        </button>
-                    </div>
+                    <button class="btn btn-outline-primary btn-sm" (click)="edit(employee)">
+                        <i class="bi bi-pencil-square"></i> Update
+                    </button>
+                    <button class="btn btn-outline-danger btn-sm" (click)="remove(employee)">
+                        <i class="bi bi-trash"></i> Delete
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" tabindex="-1" 
-     [ngClass]="{'show d-block': serviceModalOpen}" 
-     style="background: rgba(0,0,0,0.5);" 
-     role="dialog" (click)="closeServiceModal($event)">
-  <div class="modal-dialog modal-dialog-centered" role="document" (click)="$event.stopPropagation()">
-    <div class="modal-content" *ngIf="selectedService">
-      <div class="modal-header">
-        <h5 class="modal-title">{{ selectedService.name }}</h5>
-        <button type="button" class="btn-close" (click)="closeServiceModal()" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p>{{ selectedService.description }}</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="closeServiceModal()">Bezár</button>
-      </div>
+    <div class="modal fade" tabindex="-1" [ngClass]="{'show d-block': serviceModalOpen}"
+        style="background: rgba(0,0,0,0.5);" role="dialog" (click)="closeServiceModal($event)">
+        <div class="modal-dialog modal-dialog-centered" role="document" (click)="$event.stopPropagation()">
+            <div class="modal-content" *ngIf="selectedService">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ selectedService.name }}</h5>
+                    <button type="button" class="btn-close" (click)="closeServiceModal()" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>{{ selectedService.description }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="closeServiceModal()">Bezár</button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>

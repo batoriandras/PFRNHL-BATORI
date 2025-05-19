@@ -3,6 +3,7 @@ import { EmployeeService } from '../employee.service';
 import { HttpClient } from '@angular/common/http';
 import { Employee } from '../employee';
 import { Service } from '../service';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-employees-list',
@@ -11,14 +12,13 @@ import { Service } from '../service';
   styleUrl: './employees-list.component.sass'
 })
 export class EmployeesListComponent {
-  @Input() employee!: Employee;
-
   serviceModalOpen: boolean = false;
   selectedService?: Service;
-  constructor(public empService: EmployeeService) { }
+
+  constructor(private router: Router, public empService: EmployeeService) { }
 
   edit(employee: Employee):void{
-
+    this.router.navigate(["/employees/edit/"+employee.id])
   }
 
   remove(employee: Employee): void{
