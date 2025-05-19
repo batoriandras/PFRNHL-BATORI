@@ -17,6 +17,7 @@ export class EmployeeService {
   loadEmployees(): void {
     this.http.get<Employee[]>(this.apiBaseUrl).subscribe(data => {
       this.employees = data
+      this.employees.map(x=>new Date(x.dateOfEmployment))
     })
   }
 

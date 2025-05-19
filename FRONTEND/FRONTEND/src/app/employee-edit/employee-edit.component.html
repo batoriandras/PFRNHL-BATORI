@@ -1,1 +1,71 @@
-<p>employee-edit works!</p>
+<form #employeeForm="ngForm" *ngIf="employee" (ngSubmit)="save()" class="p-4 border rounded shadow-sm bg-light">
+
+    <div class="mb-3">
+        <label class="form-label">First Name</label>
+        <input type="text" class="form-control" name="firstname" [(ngModel)]="employee.firstname" #firstname="ngModel"
+            required />
+        <div class="text-danger" *ngIf="firstname.invalid && firstname.touched">First name is required.</div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Last Name</label>
+        <input type="text" class="form-control" name="lastname" [(ngModel)]="employee.lastname" #lastname="ngModel"
+            required />
+        <div class="text-danger" *ngIf="lastname.invalid && lastname.touched">Last name is required.</div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input type="text" class="form-control" name="username" [(ngModel)]="employee.username" #username="ngModel"
+            required minlength="4" />
+        <div class="text-danger" *ngIf="username.invalid && username.touched">
+            Username is required and must be at least 4 characters.
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-control" name="email" [(ngModel)]="employee.email" #email="ngModel" required
+            email />
+        <div class="text-danger" *ngIf="email.invalid && email.touched">A valid email is required.</div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Phone Number</label>
+        <input type="text" class="form-control" name="phoneNumber" [(ngModel)]="employee.phoneNumber" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Address</label>
+        <input type="text" class="form-control" name="address" [(ngModel)]="employee.address" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Image URL</label>
+        <input type="text" class="form-control" name="image" [(ngModel)]="employee.image" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Date of Employment</label>
+        <input type="date" class="form-control" name="dateOfEmployment" [(ngModel)]="employee.dateOfEmployment" />
+    </div>
+
+<div class="mb-3" *ngIf="services?.length">
+  <div class="form-check" *ngFor="let service of services">
+<input
+  class="form-check-input"
+  type="checkbox"
+  [id]="service.id"
+  [value]="service.id"
+  [checked]="isServiceChecked(service.id)"
+  (change)="onServiceToggle(service, $event)">
+    <label class="form-check-label" [for]="service.id">{{ service.name }}</label>
+  </div>
+</div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="employeeForm.invalid">
+        Mentés
+    </button>
+</form>
+<pre>{{ employee| json }}</pre>
+<pre>{{ services | json }}</pre>

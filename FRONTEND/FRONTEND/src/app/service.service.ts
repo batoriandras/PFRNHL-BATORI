@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Service } from './service';
 import { HttpClient, HttpHeaderResponse, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +10,7 @@ export class ServiceService {
   services: Service[] = []
   localdbname: string = "local_services"
   apiBaseUrl: string = "https://localhost:7183/api/Services"
+  servicesLoaded$ = new BehaviorSubject<Service[]>([]);
   constructor(private http: HttpClient) {
     //this.seed()
     this.loadServices()
@@ -18,14 +19,15 @@ export class ServiceService {
   loadServices(): void {
     this.http.get<Service[]>(this.apiBaseUrl).subscribe(data => {
       this.services = data
+      this.servicesLoaded$.next(data);
     })
   }
 
   create(service: Service): void {
-    this.http.post(this.apiBaseUrl, service).subscribe({
-      next: (response) => {
+    this.http.post<Service>(this.apiBaseUrl, service).subscribe({
+      next: (response: Service) => {
         console.log(response)
-        this.services.push(service)
+        this.services.push(response)
       },
       error: (error) => {
         console.log(error)
