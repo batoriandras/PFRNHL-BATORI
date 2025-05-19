@@ -16,11 +16,8 @@ export class ServiceService {
     this.loadServices()
   }
 
-  loadServices(): void {
-    this.http.get<Service[]>(this.apiBaseUrl).subscribe(data => {
-      this.services = data
-      this.servicesLoaded$.next(data);
-    })
+  loadServices(): Observable<Service[]> {
+    return this.http.get<Service[]>(this.apiBaseUrl)
   }
 
   create(service: Service): void {

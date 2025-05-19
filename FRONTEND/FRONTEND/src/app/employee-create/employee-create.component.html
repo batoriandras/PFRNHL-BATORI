@@ -1,1 +1,83 @@
-<p>employee-create works!</p>
+<form #employeeForm="ngForm" *ngIf="formReady" (ngSubmit)="save()" class="p-4 border rounded shadow-sm bg-light">
+
+    <div class="mb-3">
+        <label for="firstname" class="form-label">Keresztnév</label>
+        <input type="text" id="firstname" class="form-control" [(ngModel)]="employee.firstname" name="firstname" required
+            #firstname="ngModel" placeholder="John" />
+        <div *ngIf="firstname.invalid && firstname.touched" class="text-danger">
+            Keresztnév kötelező.
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="lastname" class="form-label">Keresztnév</label>
+        <input type="text" id="lastname" class="form-control" [(ngModel)]="employee.lastname" name="lastname" required
+            #lastname="ngModel" placeholder="Doe" />
+        <div *ngIf="lastname.invalid && lastname.touched" class="text-danger">
+            Vezetéknév kötelező.
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="username" class="form-label">Felhasználónév</label>
+        <input type="text" id="username" class="form-control" [(ngModel)]="employee.username" name="username" required
+            #username="ngModel" placeholder="john_doe77" />
+        <div class="text-danger" *ngIf="username.invalid && username.touched">
+            Felhasználónév kötelező.
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="email" class="form-label">Email cím</label>
+        <input type="email" id="email" class="form-control" [(ngModel)]="employee.email" name="email" required
+            pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" #email="ngModel" placeholder="Pl. info@batoriuveg.hu" />
+        <div *ngIf="email.invalid && email.touched" class="text-danger">
+            Érvényes email cím szükséges!
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="phoneNumber" class="form-label">Telefonszám</label>
+        <input type="tel" id="phoneNumber" class="form-control" [(ngModel)]="employee.phoneNumber" name="phoneNumber"
+            required pattern="^\+?[1-9]\d{1,14}$" #phoneNumber="ngModel" placeholder="Pl. +367099999999" />
+        <div *ngIf="phoneNumber.invalid && phoneNumber.touched" class="text-danger">
+            Érvényes telefonszám szükséges!
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="address" class="form-label">Cím</label>
+        <input type="text" id="address" class="form-control" [(ngModel)]="employee.address" name="address" required
+            #address="ngModel" placeholder="Pl. 2002 Biharbürgözd Simon Tibi utca 2." />
+        <div *ngIf="address.invalid && address.touched" class="text-danger">
+            Add meg a címet!
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="image" class="form-label">Kép URL</label>
+        <input type="text" class="form-control" name="image" required #image="ngModel" [(ngModel)]="employee.image" placeholder="https://randomuser.me/api/portraits/men/1.jpg"/>
+        <div *ngIf="image.invalid && image.touched" class="text-danger">
+            Kérem adjon meg egy kép URL-t!
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="dateOfEmployment" class="form-label">Foglalkoztatás kezdete</label>
+        <input type="date" class="form-control" name="dateOfEmployment" [(ngModel)]="employee.dateOfEmployment" />
+    </div>
+
+    <form [formGroup]="serviceForm" *ngIf="formReady">
+        <div class="form-check" *ngFor="let service of services; trackBy: trackById">
+            <label>
+                <input type="checkbox" [formControlName]="service.id" />
+                {{ service.name }}
+            </label>
+        </div>
+    </form>
+    <div>{{ SelectedValues }}</div>
+
+    <button type="submit" class="btn btn-primary mt-3" [disabled]="employeeForm.invalid">
+        Mentés
+    </button>
+</form>
