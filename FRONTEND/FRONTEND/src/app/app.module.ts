@@ -15,6 +15,8 @@ import { OrderTableComponent } from './order-table/order-table.component';
 import { OrderCreateComponent } from './order-create/order-create.component';
 import { EmployeeEditComponent } from './employee-edit/employee-edit.component';
 import { EmployeeCreateComponent } from './employee-create/employee-create.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -28,14 +30,16 @@ import { EmployeeCreateComponent } from './employee-create/employee-create.compo
     OrderTableComponent,
     OrderCreateComponent,
     EmployeeEditComponent,
-    EmployeeCreateComponent
+    EmployeeCreateComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

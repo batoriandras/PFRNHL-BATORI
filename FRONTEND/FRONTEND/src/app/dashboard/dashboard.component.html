@@ -1,0 +1,59 @@
+<div class="container mt-4 dashboard">
+  <h2 class="text-center mb-4">Statisztikai Áttekintés</h2>
+
+  <div class="row mb-4" *ngIf="stats?.topEmployee">
+    <div class="col">
+      <div class="top-employee alert alert-primary text-center shadow-sm">
+        <strong>Top alkalmazott:</strong> {{ stats?.topEmployee?.fullName }} —
+        {{ stats?.topEmployee?.serviceCount }} szolgáltatás
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4 mb-4" *ngIf="stats">
+    <div class="col-md-4" *ngIf="stats">
+      <div class="stat-card card text-white bg-primary shadow-sm">
+        <div class="card-body text-center">
+          <h5 class="card-title">Aktív projektek</h5>
+          <p class="stat-value">{{ stats.activeProjects }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="stat-card card text-white bg-success shadow-sm">
+        <div class="card-body text-center">
+          <h5 class="card-title">Szolgáltatások</h5>
+          <p class="stat-value">{{ stats.totalServices }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="stat-card card text-white bg-warning shadow-sm">
+        <div class="card-body text-center">
+          <h5 class="card-title">Alkalmazottak</h5>
+          <p class="stat-value">{{ stats.totalEmployees }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-header text-white bg-secondary">Legnépszerűbb szolgáltatások</div>
+        <div class="card-body d-flex justify-content-center">
+          <canvas class="h-75 w-75" baseChart [data]="pieChartData" [type]="'pie'"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card shadow-sm ">
+        <div class="card-header text-white bg-secondary">Havi rendelések száma</div>
+        <div class="card-body">
+          <canvas baseChart [data]="barChartData" [options]="barChartOptions" [type]="'bar'"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
