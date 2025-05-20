@@ -23,6 +23,7 @@ export class DashboardComponent implements OnInit {
         data: [],
         label: 'Havi rendelések száma',
         backgroundColor: '#0d6efd',
+        borderRadius: 5,
       }
     ]
   }
