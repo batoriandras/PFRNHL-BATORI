@@ -14,16 +14,13 @@ export class ServiceService {
 
   constructor(private http: HttpClient) {
     this.loadAll().subscribe()
+    //this.seed()
   }
 
   loadAll(): Observable<Service[]> {
     return this.http.get<Service[]>(this.apiBaseUrl).pipe(
       tap(data => this.servicesSubject.next(data))
     )
-  }
-
-  getById(id: string): Observable<Service> {
-    return this.http.get<Service>(`${this.apiBaseUrl}/${id}`);
   }
 
   create(service: Service): Observable<Service> {

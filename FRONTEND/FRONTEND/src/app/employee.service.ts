@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Employee } from './employee';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, elementAt, Observable, tap } from 'rxjs';
+import { EmployeeCreateDto } from './employee-create-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class EmployeeService {
   public employees$ = this.employeesSubject.asObservable()
 
   constructor(private http: HttpClient) {
+    //this.seed()
     this.loadAll().subscribe()
   }
 
@@ -22,8 +24,13 @@ export class EmployeeService {
     )
   }
 
-  getById(id: string): Observable<Employee> {
-    return this.http.get<Employee>(`${this.apiBaseUrl}/${id}`)
+  dummyCreate(employee: EmployeeCreateDto): Observable<Employee> {
+    return this.http.post<Employee>(this.apiBaseUrl, employee).pipe(
+      tap(created => {
+        const current = this.employeesSubject.value
+        this.employeesSubject.next([...current, created])
+      })
+    )
   }
 
   create(employee: Employee): Observable<Employee> {
@@ -58,9 +65,9 @@ export class EmployeeService {
   }
 
   seed(): void {
-    const dummyEmployees: Employee[] = [
+    const dummyEmployees: EmployeeCreateDto[] = [
+
       {
-        id: "e1",
         firstname: "János",
         lastname: "Nagy",
         username: "jnagy",
@@ -70,12 +77,11 @@ export class EmployeeService {
         image: "https://randomuser.me/api/portraits/men/1.jpg",
         dateOfEmployment: new Date("2020-01-15T00:00:00.000Z"),
         serviceIDs: [
-          "643839e7-9e7f-47a8-b3d6-756884470907",
-          "1516c21e-2aba-4cc7-bba6-0470bfa05020"
+          "f485a345-2446-4c09-b791-5299675f92b5",
+          "37a47d23-6400-451f-bd13-f24df0c4402d"
         ]
       },
       {
-        id: "e2",
         firstname: "Anna",
         lastname: "Kiss",
         username: "akiss",
@@ -85,11 +91,10 @@ export class EmployeeService {
         image: "https://randomuser.me/api/portraits/women/2.jpg",
         dateOfEmployment: new Date("2021-03-10T00:00:00.000Z"),
         serviceIDs: [
-          "38b11a72-87b9-465c-8e0b-a866c1dd9107"
+          "aaf721ff-7fb2-4187-a64a-f767b68132bb"
         ]
       },
       {
-        id: "e3",
         firstname: "László",
         lastname: "Tóth",
         username: "ltoth",
@@ -99,13 +104,12 @@ export class EmployeeService {
         image: "https://randomuser.me/api/portraits/men/3.jpg",
         dateOfEmployment: new Date("2019-07-23T00:00:00.000Z"),
         serviceIDs: [
-          "3a11eebd-568e-4700-bbe9-93fb9ce813e2",
-          "54bf8a82-a12b-41a3-b8d3-4851d3397cd3",
-          "1516c21e-2aba-4cc7-bba6-0470bfa05020"
+          "73ebdb89-e464-4612-a25e-3c25f58528e3",
+          "51ecab8a-b840-4b85-95a3-dc892247d0c1",
+          "37a47d23-6400-451f-bd13-f24df0c4402d"
         ]
       },
       {
-        id: "e4",
         firstname: "Eszter",
         lastname: "Molnár",
         username: "emolnar",
@@ -115,11 +119,10 @@ export class EmployeeService {
         image: "https://randomuser.me/api/portraits/women/4.jpg",
         dateOfEmployment: new Date("2022-11-05T00:00:00.000Z"),
         serviceIDs: [
-          "a0864b2a-b284-4bbb-bd2e-0d5946394f38"
+          "577d4ca7-dd6d-47f5-8393-bb9696304a5b"
         ]
       },
       {
-        id: "e5",
         firstname: "Zoltán",
         lastname: "Farkas",
         username: "zfarkas",
@@ -129,13 +132,12 @@ export class EmployeeService {
         image: "https://randomuser.me/api/portraits/men/5.jpg",
         dateOfEmployment: new Date("2018-09-30T00:00:00.000Z"),
         serviceIDs: [
-          "c63f7db7-536e-49a6-9855-bb03957c8300",
-          "e5b7c40a-c5f1-4ad4-bc85-948ae8125376",
-          "f72f9805-5961-493c-b89b-cf4474d01a83"
+          "21a886b3-e3bb-4afe-a48e-97947d2e9de9",
+          "2fc4e5b0-c275-46f8-9f30-8a2c930bca05",
+          "f485a345-2446-4c09-b791-5299675f92b5"
         ]
       },
       {
-        id: "e6",
         firstname: "Mária",
         lastname: "Varga",
         username: "mvarga",
@@ -145,11 +147,10 @@ export class EmployeeService {
         image: "https://randomuser.me/api/portraits/women/6.jpg",
         dateOfEmployment: new Date("2023-02-12T00:00:00.000Z"),
         serviceIDs: [
-          "92e07714-32ec-4a02-9eed-51f1e09c94cf"
+          "1a4e038a-fd56-44f2-b34a-9109779bc941"
         ]
       },
       {
-        id: "e7",
         firstname: "Gábor",
         lastname: "Kovács",
         username: "gkovacs",
@@ -159,12 +160,11 @@ export class EmployeeService {
         image: "https://randomuser.me/api/portraits/men/7.jpg",
         dateOfEmployment: new Date("2017-08-20T00:00:00.000Z"),
         serviceIDs: [
-          "f72f9805-5961-493c-b89b-cf4474d01a83",
-          "1516c21e-2aba-4cc7-bba6-0470bfa05020"
+          "f485a345-2446-4c09-b791-5299675f92b5",
+          "37a47d23-6400-451f-bd13-f24df0c4402d"
         ]
       },
       {
-        id: "e8",
         firstname: "Ildikó",
         lastname: "Horváth",
         username: "ihorvath",
@@ -174,11 +174,10 @@ export class EmployeeService {
         image: "https://randomuser.me/api/portraits/women/8.jpg",
         dateOfEmployment: new Date("2021-05-01T00:00:00.000Z"),
         serviceIDs: [
-          "1516c21e-2aba-4cc7-bba6-0470bfa05020"
+          "37a47d23-6400-451f-bd13-f24df0c4402d"
         ]
       },
       {
-        id: "e9",
         firstname: "Tamás",
         lastname: "Balogh",
         username: "tbalogh",
@@ -188,11 +187,10 @@ export class EmployeeService {
         image: "https://randomuser.me/api/portraits/men/9.jpg",
         dateOfEmployment: new Date("2019-12-15T00:00:00.000Z"),
         serviceIDs: [
-          "e5b7c40a-c5f1-4ad4-bc85-948ae8125376"
+          "2fc4e5b0-c275-46f8-9f30-8a2c930bca05"
         ]
       },
       {
-        id: "e10",
         firstname: "Réka",
         lastname: "Fischer",
         username: "rfischer",
@@ -202,16 +200,13 @@ export class EmployeeService {
         image: "https://randomuser.me/api/portraits/women/10.jpg",
         dateOfEmployment: new Date("2022-06-25T00:00:00.000Z"),
         serviceIDs: [
-          "54bf8a82-a12b-41a3-b8d3-4851d3397cd3"
+          "51ecab8a-b840-4b85-95a3-dc892247d0c1"
         ]
       }
     ]
 
-    dummyEmployees.forEach(emp => {
-      this.create(emp).subscribe({
-        next: (response) => console.log('Seeded:', response),
-        error: (err) => console.error('Seed error:', err)
-      })
+    dummyEmployees.forEach(element => {
+      this.dummyCreate(element).subscribe()
     })
   }
 }

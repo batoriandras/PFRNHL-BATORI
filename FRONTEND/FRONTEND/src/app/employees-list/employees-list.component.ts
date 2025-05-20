@@ -52,7 +52,6 @@ export class EmployeesListComponent implements OnInit {
     this.serviceModalOpen = true
   }
 
-
   closeServiceModal(event?: MouseEvent) {
     if (event) {
       event.stopPropagation()

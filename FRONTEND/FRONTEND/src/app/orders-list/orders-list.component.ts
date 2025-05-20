@@ -12,10 +12,11 @@ import { Order, OrderStatus } from '../order';
 })
 export class OrdersListComponent implements OnInit {
   orders: Order[] = []
-  public expandedOrderIndex: number | null = null
-  public expandedArchivedOrderIndex: number | null = null;
+  expandedOrderIndex: number | null = null
+  expandedArchivedOrderIndex: number | null = null;
   orderstatus = OrderStatus
   order: Order = new Order
+  today: Date = new Date();
 
   constructor(private router: Router, private http: HttpClient, public ordService: OrderService) { }
 
@@ -31,11 +32,20 @@ export class OrdersListComponent implements OnInit {
   }
 
   get activeOrders(): Order[] {
-    return this.orders.filter(x => x.status !== OrderStatus.Completed && x.status !== OrderStatus.Declined)
+    return this.orders.filter(x => x.status !== OrderStatus.Completed && x.status !== OrderStatus.Declined).sort((a, b) => {
+      if (a.status === OrderStatus.InProgress && b.status !== OrderStatus.InProgress) return -1
+      if (a.status !== OrderStatus.InProgress && b.status === OrderStatus.InProgress) return 1
+      return 0
+    })
   }
 
   get archivedOrders(): Order[] {
     return this.orders.filter(x => x.status === OrderStatus.Completed || x.status === OrderStatus.Declined)
+    .sort((a, b) => {
+      if (a.status === OrderStatus.Completed && b.status !== OrderStatus.Completed) return -1
+      if (a.status !== OrderStatus.Completed && b.status === OrderStatus.Completed) return 1
+      return 0
+    })
   }
 
   completeOrder(order: Order): void {

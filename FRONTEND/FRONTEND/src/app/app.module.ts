@@ -11,7 +11,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { ServiceCreateComponent } from './service-create/service-create.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
-import { OrderTableComponent } from './order-table/order-table.component';
 import { OrderCreateComponent } from './order-create/order-create.component';
 import { EmployeeEditComponent } from './employee-edit/employee-edit.component';
 import { EmployeeCreateComponent } from './employee-create/employee-create.component';
@@ -27,7 +26,6 @@ import { NgChartsModule } from 'ng2-charts';
     ServiceCreateComponent,
     NavbarComponent,
     FooterComponent,
-    OrderTableComponent,
     OrderCreateComponent,
     EmployeeEditComponent,
     EmployeeCreateComponent,

@@ -13,7 +13,7 @@
         </thead>
         <tbody>
             <ng-container *ngFor="let order of activeOrders;let i = index">
-                <tr>
+                <tr [ngClass]="{ 'table-danger': order.dueDate < today }">
                     <td>{{ order.service?.name }}</td>
                     <td>{{ order.description | slice:0:30 }}...</td>
                     <td>{{ order.dueDate | date }}</td>
@@ -96,7 +96,8 @@
                         <strong>Email:</strong> {{ order.email }}<br>
                         <strong>Telefon:</strong> {{ order.phoneNumber }}<br>
                         <strong>Cím:</strong> {{ order.address }}<br>
-                        <strong>Rendelés dátuma:</strong> {{ order.orderDate | date }}
+                        <strong>Rendelés dátuma:</strong> {{ order.orderDate | date }} <br>
+                        <strong>Befejezve:</strong> {{ order.completionDate | date }}
                     </td>
                     <td colspan="2" class="bg-light">
                         <div class="d-flex justify-content-end flex-column">

@@ -1,9 +1,8 @@
 <div class="container my-4">
 
-    <h2 class="mb-4">Új alkalmazott létrehozása</h2>
+    <h2 class="mb-4">Alkalmazott módosítása</h2>
     <form #employeeForm="ngForm" *ngIf="formReady" (ngSubmit)="save()" >
 
-        <input type="text" name="id" id="" [(ngModel)]="employee.id" disabled>
         <div class="mb-3">
             <label for="firstname" class="form-label">Keresztnév</label>
             <input type="text" id="firstname" class="form-control" [(ngModel)]="employee.firstname" name="firstname"

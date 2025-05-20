@@ -10,7 +10,7 @@ import { EmployeeCreateComponent } from './employee-create/employee-create.compo
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
-  {path:"",redirectTo:"services",pathMatch:"full"},
+  {path:"",redirectTo:"dashboard",pathMatch:"full"},
   {path:"services", component: ServicesListComponent},
   {path:"employees", component: EmployeesListComponent},
   {path:"orders", component: OrdersListComponent},
@@ -19,7 +19,7 @@ const routes: Routes = [
   {path:"employees/edit/:id", component: EmployeeEditComponent},
   {path:"employees/create",component: EmployeeCreateComponent},
   {path:"dashboard",component: DashboardComponent},
-  {path:"**",redirectTo:"services",pathMatch:"full"}
+  {path:"**",redirectTo:"dashboard",pathMatch:"full"}
 ]
 
 @NgModule({
