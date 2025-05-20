@@ -18,6 +18,7 @@ export class OrderCreateComponent implements OnInit {
   services: Service[] = []
   orderstatus = OrderStatus
   today: string = new Date().toISOString().substring(0, 10)
+  isSubmitting: boolean = false
 
   constructor(private router: Router, public ordService: OrderService, public servService: ServiceService) { }
 
@@ -27,20 +28,24 @@ export class OrderCreateComponent implements OnInit {
       error: err => console.log(err)
     })
 
-    this.servService.services$.subscribe(services=>{
-      this.services=services
+    this.servService.services$.subscribe(services => {
+      this.services = services
     })
   }
 
   onSubmit(): void {
+    if (this.isSubmitting) return
+    this.isSubmitting=true
+
     this.ordService.create(this.order).subscribe({
       next: data => {
-        console.log('Létrehozva:', data);
+        console.log('Létrehozva:', data)
+        this.router.navigate(["orders"])
       },
       error: err => {
-        console.error('Hiba a létrehozáskor:', err);
+        console.error('Hiba a létrehozáskor:', err)
+        this.isSubmitting=false
       }
-    });
-    this.router.navigate(["orders"])
+    })
   }
 }

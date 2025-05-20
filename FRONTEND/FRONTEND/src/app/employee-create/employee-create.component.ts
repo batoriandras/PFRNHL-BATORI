@@ -22,21 +22,21 @@ export class EmployeeCreateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.serService.loadAll();
+    this.serService.loadAll()
 
     this.serService.services$.subscribe(services => {
       if (services.length > 0) {
-        this.services = services;
+        this.services = services
 
         this.serviceForm = new FormGroup(
           Object.fromEntries(
             services.map(service => [service.id, new FormControl(false)])
           )
-        );
+        )
 
-        this.formReady = true;
+        this.formReady = true
       }
-    });
+    })
   }
 
   get SelectedValues() {
@@ -44,7 +44,7 @@ export class EmployeeCreateComponent implements OnInit {
   }
 
   trackById(index: number, service: Service): string {
-    return service.id;
+    return service.id
   }
 
   save(): void {

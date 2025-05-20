@@ -29,7 +29,7 @@ export class ServiceCreateComponent {
       error: err => {
         console.error('Hiba a létrehozáskor:', err)
       }
-    });
+    })
     
   }
 }

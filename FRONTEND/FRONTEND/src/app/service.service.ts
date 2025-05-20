@@ -13,14 +13,13 @@ export class ServiceService {
   services$ = this.servicesSubject.asObservable();
 
   constructor(private http: HttpClient) {
-    // opcionális, automatikusan betölti a lista indításkor
-    this.loadAll().subscribe();
+    this.loadAll().subscribe()
   }
 
   loadAll(): Observable<Service[]> {
     return this.http.get<Service[]>(this.apiBaseUrl).pipe(
       tap(data => this.servicesSubject.next(data))
-    );
+    )
   }
 
   getById(id: string): Observable<Service> {
@@ -30,23 +29,23 @@ export class ServiceService {
   create(service: Service): Observable<Service> {
     return this.http.post<Service>(this.apiBaseUrl, service).pipe(
       tap(created => {
-        const current = this.servicesSubject.value;
-        this.servicesSubject.next([...current, created]);
+        const current = this.servicesSubject.value
+        this.servicesSubject.next([...current, created])
       })
-    );
+    )
   }
 
   update(service: Service): Observable<Service> {
     return this.http.put<Service>(`${this.apiBaseUrl}/${service.id}`, service).pipe(
       tap(updated => {
-        const current = this.servicesSubject.value;
-        const index = current.findIndex(s => s.id === updated.id);
+        const current = this.servicesSubject.value
+        const index = current.findIndex(s => s.id === updated.id)
         if (index !== -1) {
-          current[index] = updated;
+          current[index] = updated
           this.servicesSubject.next([...current]);
         }
       })
-    );
+    )
   }
 
   delete(service: Service): Observable<void> {
@@ -55,7 +54,7 @@ export class ServiceService {
         const current = this.servicesSubject.value.filter(s => s.id !== service.id);
         this.servicesSubject.next(current);
       })
-    );
+    )
   }
 
   seed(): void {

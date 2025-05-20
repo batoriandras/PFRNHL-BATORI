@@ -44,10 +44,10 @@ export class OrdersListComponent implements OnInit {
       next: data => {
         let index = this.orders.findIndex(x => x.id === order.id)
         this.orders[index] = order
-        console.log('Frissítve:', data);
+        console.log('Frissítve:', data)
       },
       error: err => {
-        console.error('Hiba történt frissítéskor:', err);
+        console.error('Hiba történt frissítéskor:', err)
       }
     })
   }
@@ -58,10 +58,10 @@ export class OrdersListComponent implements OnInit {
       next: data => {
         let index = this.orders.findIndex(x => x.id === order.id)
         this.orders[index] = order
-        console.log('Frissítve:', data);
+        console.log('Frissítve:', data)
       },
       error: err => {
-        console.error('Hiba történt frissítéskor:', err);
+        console.error('Hiba történt frissítéskor:', err)
       }
     })
   }
@@ -72,10 +72,10 @@ export class OrdersListComponent implements OnInit {
       next: data => {
         let index = this.orders.findIndex(x => x.id === order.id)
         this.orders[index] = order
-        console.log('Frissítve:', data);
+        console.log('Frissítve:', data)
       },
       error: err => {
-        console.error('Hiba történt frissítéskor:', err);
+        console.error('Hiba történt frissítéskor:', err)
       }
     })
   }

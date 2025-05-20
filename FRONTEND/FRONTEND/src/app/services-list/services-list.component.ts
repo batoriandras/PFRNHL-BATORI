@@ -42,10 +42,10 @@ export class ServicesListComponent implements OnInit {
       next: data => {
         let index = this.services.findIndex(x => x.id === service.id)
         this.services[index] = service
-        console.log('Frissítve:', data);
+        console.log('Frissítve:', data)
       },
       error: err => {
-        console.error('Hiba történt frissítéskor:', err);
+        console.error('Hiba történt frissítéskor:', err)
       }
     })
   }

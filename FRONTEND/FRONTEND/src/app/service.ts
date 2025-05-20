@@ -5,11 +5,11 @@ export class Service {
     id: string = ""
     name: string= ""
     description: string = ""
-    orders?: Order[];
-    employees?: Employee[];
-    editMode: boolean = false;
+    orders?: Order[]
+    employees?: Employee[]
+    editMode: boolean = false
 
       constructor(init?: Partial<Service>) {
-    Object.assign(this, init);
+    Object.assign(this, init)
   }
 }

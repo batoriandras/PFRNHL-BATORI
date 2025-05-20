@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Employee } from '../employee';
 import { Service } from '../service';
 import { Route, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-employees-list',
@@ -15,6 +16,7 @@ export class EmployeesListComponent implements OnInit {
   serviceModalOpen: boolean = false
   selectedService?: Service
   employees: Employee[] = []
+  employees$!: Observable<Employee[]>
 
   constructor(private router: Router, public empService: EmployeeService) { }
 
@@ -23,7 +25,7 @@ export class EmployeesListComponent implements OnInit {
       next: data => console.log(data),
       error: err => console.log(err)
     })
-
+    
     this.empService.employees$.subscribe(employees=>{
       this.employees = employees
     })
@@ -46,15 +48,16 @@ export class EmployeesListComponent implements OnInit {
   }
 
   openServiceModal(service: Service) {
-    this.selectedService = service;
-    this.serviceModalOpen = true;
+    this.selectedService = service
+    this.serviceModalOpen = true
   }
+
 
   closeServiceModal(event?: MouseEvent) {
     if (event) {
-      event.stopPropagation();
+      event.stopPropagation()
     }
-    this.serviceModalOpen = false;
-    this.selectedService = undefined;
+    this.serviceModalOpen = false
+    this.selectedService = undefined
   }
 }

@@ -15,6 +15,6 @@ export class Employee {
     services?: Service[]
 
     constructor(init?: Partial<Employee>) {
-        Object.assign(this, init);
+        Object.assign(this, init)
     }
 }

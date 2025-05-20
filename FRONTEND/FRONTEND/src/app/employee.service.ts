@@ -19,7 +19,7 @@ export class EmployeeService {
   loadAll(): Observable<Employee[]> {
     return this.http.get<Employee[]>(this.apiBaseUrl).pipe(
       tap(employees => this.employeesSubject.next(employees))
-    );
+    )
   }
 
   getById(id: string): Observable<Employee> {
