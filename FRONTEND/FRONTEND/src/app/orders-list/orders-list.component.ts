@@ -16,7 +16,6 @@ export class OrdersListComponent implements OnInit {
   expandedArchivedOrderIndex: number | null = null;
   orderstatus = OrderStatus
   order: Order = new Order
-  today: Date = new Date();
 
   constructor(private router: Router, private http: HttpClient, public ordService: OrderService) { }
 
@@ -26,8 +25,8 @@ export class OrdersListComponent implements OnInit {
       error: err => console.log(err)
     })
 
-    this.ordService.orders$.subscribe(orders=>{
-      this.orders=orders
+    this.ordService.orders$.subscribe(orders => {
+      this.orders = orders
     })
   }
 
@@ -41,11 +40,15 @@ export class OrdersListComponent implements OnInit {
 
   get archivedOrders(): Order[] {
     return this.orders.filter(x => x.status === OrderStatus.Completed || x.status === OrderStatus.Declined)
-    .sort((a, b) => {
-      if (a.status === OrderStatus.Completed && b.status !== OrderStatus.Completed) return -1
-      if (a.status !== OrderStatus.Completed && b.status === OrderStatus.Completed) return 1
-      return 0
-    })
+      .sort((a, b) => {
+        if (a.status === OrderStatus.Completed && b.status !== OrderStatus.Completed) return -1
+        if (a.status !== OrderStatus.Completed && b.status === OrderStatus.Completed) return 1
+        return 0
+      })
+  }
+
+  isOverdue(dueDate: string | Date): boolean {
+    return new Date(dueDate) < new Date()
   }
 
   completeOrder(order: Order): void {

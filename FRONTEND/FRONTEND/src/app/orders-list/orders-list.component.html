@@ -13,10 +13,10 @@
         </thead>
         <tbody>
             <ng-container *ngFor="let order of activeOrders;let i = index">
-                <tr [ngClass]="{ 'table-danger': order.dueDate < today }">
-                    <td>{{ order.service?.name }}</td>
+                <tr>
+                    <td>{{ order.service?.name }} </td>
                     <td>{{ order.description | slice:0:30 }}...</td>
-                    <td>{{ order.dueDate | date }}</td>
+                    <td>{{ order.dueDate | date }} <span *ngIf="isOverdue(order.dueDate)" class="badge bg-danger">!!!</span></td>
                     <td>
                         <span class="badge" [ngClass]="{
                 'bg-warning': order.status === orderstatus.Pending,
