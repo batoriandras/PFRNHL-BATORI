@@ -22,7 +22,7 @@
 - Rendelés törlése
 
 ### Szolgáltatás kezelés
-- Szolgáltatások listázása és hozzá kapcsolódó akalmaottak és rendelések megjelenítése
+- Szolgáltatások listázása
 - Új szolgáltatás hozzáadása
 - Szolgáltatás adatainak módosítása
 - Szolgáltatás törlése
