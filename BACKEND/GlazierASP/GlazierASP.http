@@ -1,0 +1,6 @@
+@GlazierASP_HostAddress = http://localhost:5285
+
+GET {{GlazierASP_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
