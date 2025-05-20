@@ -15,7 +15,7 @@ export class OrderService {
 
   constructor(private http: HttpClient) {
     this.loadAll().subscribe()
-    //this.seed()
+    //this.seed() //először a services-t kell seedelni!
   }
 
   loadAll(): Observable<Order[]> {

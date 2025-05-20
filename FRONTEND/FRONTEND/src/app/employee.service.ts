@@ -14,8 +14,8 @@ export class EmployeeService {
   public employees$ = this.employeesSubject.asObservable()
 
   constructor(private http: HttpClient) {
-    //this.seed()
     this.loadAll().subscribe()
+    //this.seed() //először a services-t kell seedelni!
   }
 
   loadAll(): Observable<Employee[]> {
@@ -66,7 +66,6 @@ export class EmployeeService {
 
   seed(): void {
     const dummyEmployees: EmployeeCreateDto[] = [
-
       {
         firstname: "János",
         lastname: "Nagy",

@@ -14,7 +14,7 @@ export class ServiceService {
 
   constructor(private http: HttpClient) {
     this.loadAll().subscribe()
-    //this.seed()
+    //this.seed() //order és employee nem seedel services seed nélkül!
   }
 
   loadAll(): Observable<Service[]> {
